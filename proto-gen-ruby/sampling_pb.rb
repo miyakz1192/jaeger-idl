@@ -4,7 +4,7 @@
 require 'google/protobuf'
 
 require 'google/api/annotations_pb'
-require 'protoc-gen-swagger/options/annotations_pb'
+#require 'protoc-gen-swagger/options/annotations_pb'
 Google::Protobuf::DescriptorPool.generated_pool.build do
   add_file("sampling.proto", :syntax => :proto3) do
     add_message "jaeger.api_v2.ProbabilisticSamplingStrategy" do

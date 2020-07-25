@@ -5,7 +5,7 @@ require 'google/protobuf'
 
 require 'model_pb'
 require 'google/api/annotations_pb'
-require 'protoc-gen-swagger/options/annotations_pb'
+#require 'protoc-gen-swagger/options/annotations_pb'
 Google::Protobuf::DescriptorPool.generated_pool.build do
   add_file("collector.proto", :syntax => :proto3) do
     add_message "jaeger.api_v2.PostSpansRequest" do
