@@ -12,7 +12,8 @@ PROTOTOOL_IMAGE=uber/prototool:$(PROTOTOOL_VER)
 PROTOTOOL=docker run --rm -u ${shell id -u} -v "${PWD}:/go/src/${PROJECT_ROOT}" -w /go/src/${PROJECT_ROOT} $(PROTOTOOL_IMAGE)
 
 PROTOC_VER=0.2.0
-PROTOC_IMAGE=jaegertracing/protobuf:$(PROTOC_VER)
+#PROTOC_IMAGE=jaegertracing/protobuf:$(PROTOC_VER)
+PROTOC_IMAGE=miyakz1192/protobuf:$(PROTOC_VER)
 PROTOC=docker run --rm -u ${shell id -u} -v "${PWD}:${PWD}" -w ${PWD} ${PROTOC_IMAGE} --proto_path=${PWD}
 
 THRIFT_GO_ARGS=thrift_import="github.com/apache/thrift/lib/go/thrift"
@@ -67,6 +68,7 @@ PROTO_GEN_JAVA_DIR ?= proto-gen-java
 PROTO_GEN_JS_DIR ?= proto-gen-js
 PROTO_GEN_CPP_DIR ?= proto-gen-cpp
 PROTO_GEN_CSHARP_DIR ?= proto-gen-csharp
+PROTO_GEN_RUBY_DIR ?= proto-gen-ruby
 
 PROTOC_WITHOUT_GRPC := $(PROTOC) \
 		$(PROTO_INCLUDES) \
@@ -75,14 +77,16 @@ PROTOC_WITHOUT_GRPC := $(PROTOC) \
 		--python_out=${PROTO_GEN_PYTHON_DIR} \
 		--js_out=${PROTO_GEN_JS_DIR} \
 		--cpp_out=${PROTO_GEN_CPP_DIR} \
-		--csharp_out=base_namespace:${PROTO_GEN_CSHARP_DIR}
+		--csharp_out=base_namespace:${PROTO_GEN_CSHARP_DIR} \
+		--ruby_out=${PROTO_GEN_RUBY_DIR}
 
 PROTOC_WITH_GRPC := $(PROTOC_WITHOUT_GRPC) \
 		--grpc-java_out=${PROTO_GEN_JAVA_DIR} \
 		--grpc-python_out=${PROTO_GEN_PYTHON_DIR} \
 		--grpc-js_out=${PROTO_GEN_JS_DIR} \
 		--grpc-cpp_out=${PROTO_GEN_CPP_DIR} \
-		--grpc-csharp_out=${PROTO_GEN_CSHARP_DIR}
+		--grpc-csharp_out=${PROTO_GEN_CSHARP_DIR} \
+		--grpc-ruby_out=${PROTO_GEN_RUBY_DIR}
 
 PROTOC_CS_INTERNAL := $(PROTOC) \
 		$(PROTO_INCLUDES) \
@@ -94,7 +98,8 @@ proto:
 		${PROTO_GEN_PYTHON_DIR} \
 		${PROTO_GEN_JS_DIR} \
 		${PROTO_GEN_CPP_DIR} \
-		${PROTO_GEN_CSHARP_DIR}
+		${PROTO_GEN_CSHARP_DIR} \
+		${PROTO_GEN_RUBY_DIR}
 
 	$(PROTOC_WITHOUT_GRPC) \
 		proto/api_v2/model.proto
